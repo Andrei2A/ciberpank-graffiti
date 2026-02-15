@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cyber Graffiti: Level Selection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2547f4",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101322",
+                        "neon-cyan": "#00FFFF",
+                        "neon-yellow": "#FAFF00",
+                        "neon-red": "#FF003C",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    animation: {
+                        'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'rain': 'rain 1s linear infinite',
+                    },
+                    keyframes: {
+                        'pulse-glow': {
+                            '0%, 100%': { boxShadow: '0 0 10px #FAFF00, 0 0 20px #FAFF00' },
+                            '50%': { boxShadow: '0 0 20px #FAFF00, 0 0 40px #FAFF00' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>/* Custom Scrollbar for cleaner look */
+::-webkit-scrollbar {
+    width: 6px
+    }
+::-webkit-scrollbar-track {
+    background: #101322
+    }
+::-webkit-scrollbar-thumb {
+    background: #2547f4;
+    border-radius: 3px
+    }
+/* Glitch Effect Classes */
+.glitch-text {
+    position: relative
+    }
+.glitch-text::before, .glitch-text::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #101322
+    }
+.glitch-text::before {
+    left: 2px;
+    text-shadow: -1px 0 #ff00c1;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim 5s infinite linear alternate-reverse
+    }
+.glitch-text::after {
+    left: -2px;
+    text-shadow: -1px 0 #00fff9;
+    clip: rect(44px, 450px, 56px, 0);
+    animation: glitch-anim2 5s infinite linear alternate-reverse
+    }
+@keyframes glitch-anim {
+    0% {
+        clip: rect(31px, 9999px, 9px, 0);
+        } 20% {
+        clip: rect(78px, 9999px, 83px, 0);
+        } 40% {
+        clip: rect(10px, 9999px, 89px, 0);
+        } 60% {
+        clip: rect(62px, 9999px, 6px, 0);
+        } 80% {
+        clip: rect(38px, 9999px, 48px, 0);
+        } 100% {
+        clip: rect(96px, 9999px, 4px, 0);
+        }
+    }
+@keyframes glitch-anim2 {
+    0% {
+        clip: rect(65px, 9999px, 95px, 0);
+        } 20% {
+        clip: rect(5px, 9999px, 15px, 0);
+        } 40% {
+        clip: rect(82px, 9999px, 3px, 0);
+        } 60% {
+        clip: rect(32px, 9999px, 46px, 0);
+        } 80% {
+        clip: rect(18px, 9999px, 92px, 0);
+        } 100% {
+        clip: rect(49px, 9999px, 11px, 0);
+        }
+    }
+/* Rain effect background */
+.rain-overlay {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBd3tqOL8Yzsa8a2FeWwhKD8G_pv5hzi3btAlNKBq0K6aOTHIIluTeun-fBt9vA81K16VHz-yzcenaDmW-jlfopB5etjXm0-9GYdTP0qQMJ7P3BdE-FJmFC3TO9imBBb0TdbfhufxfP8dOIcq2yMvDYBHNg6AB5sXI0rdP3r1CiG7zlaLexKWowaWP1X-dom2wAoVlw3OFY4Aa5DnYTv3J2gsbHdzgJYTl6liHZpti_PvU3wbtAeiJkBHCu8z_PnzbDfmQ8TMqwSD8);
+    animation: rain 0.3s linear infinite
+    }
+@keyframes rain {
+    0% {
+        background-position: 0% 0%;
+        } 100% {
+        background-position: 20% 100%;
+        }
+    }
+.glass-panel {
+    background: rgba(16, 19, 34, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1)
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen relative overflow-hidden">
+<!-- Ambient Background Effects -->
+<div class="fixed inset-0 z-0 pointer-events-none">
+<!-- Gradient Mesh -->
+<div class="absolute top-[-20%] left-[-20%] w-[80%] h-[80%] bg-primary/20 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-20%] right-[-20%] w-[80%] h-[80%] bg-purple-900/20 rounded-full blur-[120px]"></div>
+<!-- Rain Overlay -->
+<div class="absolute inset-0 opacity-10 rain-overlay bg-repeat"></div>
+<!-- Scanlines -->
+<div class="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[1] bg-[length:100%_2px,3px_100%] pointer-events-none"></div>
+</div>
+<!-- Main Container -->
+<div class="relative z-10 flex flex-col h-screen max-w-md mx-auto border-x border-white/5 bg-background-dark/80 shadow-2xl">
+<!-- Header -->
+<header class="flex items-center justify-between px-6 py-5 bg-background-dark/90 backdrop-blur-md border-b border-white/5 sticky top-0 z-30">
+<div class="flex flex-col">
+<span class="text-xs text-primary font-bold tracking-[0.2em] uppercase">Sector Select</span>
+<h1 class="text-xl font-bold tracking-tight text-white glitch-text" data-text="CYBER GRAFFITI">CYBER GRAFFITI</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
+<span class="material-icons text-neon-yellow text-sm">bolt</span>
+<span class="text-sm font-bold font-mono">2,450</span>
+</div>
+<button class="text-gray-400 hover:text-primary transition-colors">
+<span class="material-icons">settings</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto px-4 pb-28 pt-6">
+<!-- Map Line/Path SVG Background (Visual Connector) -->
+<div class="absolute left-1/2 top-0 bottom-0 w-1 bg-white/5 -translate-x-1/2 -z-10 h-full"></div>
+<div class="grid grid-cols-1 gap-6 max-w-sm mx-auto">
+<!-- Level 2: Completed -->
+<div class="relative group">
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 w-3 h-[2px] bg-neon-cyan/50"></div>
+<button class="w-full relative overflow-hidden bg-background-dark border border-neon-cyan/30 rounded-xl p-0 transition-all active:scale-95 shadow-[0_0_15px_rgba(0,255,255,0.1)]">
+<!-- Image Background with Data Alt -->
+<div class="h-24 w-full bg-cover bg-center relative" data-alt="Dark alley with cyan neon lights reflecting on wet pavement" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAc6oV3qRrnsoKP6RrvqnvJZkUrWkewNhyc39iEqiFl-2NZ72hG8MplC_zheiMWkaNV3HcJLg5QKq8fYQWsCpZbcrB6lnjYELMACH7jU5dT4-VFKHWpIrm71K_m_UbqFLXO9XPjE6B3HPksYxNRbL-NKEgpS9CdroDES8TCsqLHLGYT08OY6ge9VIr4J-H_anQPxcJLMQsW-6LzhEJCaFUHmVsOGpgBpXF9-9NW5hX7zrSCQ10uCYntoiSl0vjxbirAdpf_Rb6snTE');">
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent"></div>
+<!-- Status Badge -->
+<div class="absolute top-2 right-2 bg-neon-cyan/20 text-neon-cyan text-[10px] font-bold px-2 py-0.5 rounded border border-neon-cyan/50 uppercase tracking-wider backdrop-blur-sm">
+                                Cleared
+                            </div>
+</div>
+<div class="p-4 relative -mt-6">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-neon-cyan font-bold text-lg tracking-wide shadow-cyan">THE SLUMS</h3>
+<p class="text-gray-400 text-xs font-mono mt-0.5">Multiplication x2</p>
+</div>
+<div class="text-4xl font-bold text-neon-cyan/20 font-display absolute right-4 bottom-2 select-none">02</div>
+</div>
+<!-- Progress Stars -->
+<div class="flex gap-1 mt-3">
+<span class="material-icons text-neon-cyan text-sm">star</span>
+<span class="material-icons text-neon-cyan text-sm">star</span>
+<span class="material-icons text-neon-cyan text-sm">star</span>
+</div>
+</div>
+</button>
+</div>
+<!-- Level 3: Completed -->
+<div class="relative group">
+<div class="absolute -right-3 top-1/2 -translate-y-1/2 w-3 h-[2px] bg-neon-cyan/50"></div>
+<button class="w-full relative overflow-hidden bg-background-dark border border-neon-cyan/30 rounded-xl p-0 transition-all active:scale-95 shadow-[0_0_15px_rgba(0,255,255,0.1)]">
+<div class="h-24 w-full bg-cover bg-center relative" data-alt="Futuristic asian street market with pink and blue neon signs" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuARPjdSfkpeGucZCvxe0OuEeinCT1LicUnakZLFGN6SeWNfCkcpN338L4B1nNR5bvVK2TeBSg9jN1bDpHihQz_1j4c7OzG_zfw5jf8oeFVm9ObLGp93O6_OOk0G3dClSegQElcnRftYhIq0DC8cVcnPWXJe8NVBF3F8rTYhSxdX3BjgtNn-HaULRaI0FkqPx9jt2293JpFQ3oksf_eDkZQoZXaI6XZf2D0qVoUTFnj57if0ahaT45B_g3rn3f9i-UoJHuPd55WioqY');">
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/60 to-transparent"></div>
+<div class="absolute top-2 right-2 bg-neon-cyan/20 text-neon-cyan text-[10px] font-bold px-2 py-0.5 rounded border border-neon-cyan/50 uppercase tracking-wider backdrop-blur-sm">
+                                Cleared
+                            </div>
+</div>
+<div class="p-4 relative -mt-6">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="text-neon-cyan font-bold text-lg tracking-wide">NEON MARKET</h3>
+<p class="text-gray-400 text-xs font-mono mt-0.5">Multiplication x3</p>
+</div>
+<div class="text-4xl font-bold text-neon-cyan/20 font-display absolute right-4 bottom-2 select-none">03</div>
+</div>
+<div class="flex gap-1 mt-3">
+<span class="material-icons text-neon-cyan text-sm">star</span>
+<span class="material-icons text-neon-cyan text-sm">star</span>
+<span class="material-icons text-gray-700 text-sm">star</span>
+</div>
+</div>
+</button>
+</div>
+<!-- Level 4: Current / Pulsing -->
+<div class="relative group my-2">
+<!-- Connector line glow -->
+<div class="absolute -left-4 -right-4 top-1/2 h-[1px] bg-neon-yellow/50 blur-[2px]"></div>
+<button class="w-full relative overflow-hidden bg-background-dark border-2 border-neon-yellow rounded-xl p-0 transform scale-105 shadow-[0_0_20px_rgba(250,255,0,0.3)] animate-pulse-glow z-10">
+<div class="h-28 w-full bg-cover bg-center relative" data-alt="Abstract digital data stream tunnel with blue and violet lights" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB9bBXOWBAl5C2mP75PVE78K-U3hWXOzDZkeGibLLNHK4k8qXwIuCqOgvDzBF9MhK7DfnOLoGmjqQMtfzElZHdvamO1DI7wA-kv4C2xCueKxGN5ZRRUlBkRpB6OegLlv78zRleRdTD8oeZi51Za6Bze7E2agLLZG8z1SZAYVXCQ3BgZMOre2R4a--BprLXIDMYj9nTGTpmY7G5gR2sm9CSRs8rKkYW7OgOuLUcgaAKoSw4Wzkg7plMLxvzXbk4TKgq1xrmstBcj0Ns');">
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/40 to-transparent"></div>
+<div class="absolute top-2 right-2 bg-neon-yellow text-black text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider shadow-[0_0_10px_rgba(250,255,0,0.8)] flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-black rounded-full animate-ping"></span>
+                                Current Target
+                            </div>
+<!-- Big Number Overlay -->
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-6xl font-black text-white mix-blend-overlay opacity-50 tracking-tighter">
+                                x4
+                            </div>
+</div>
+<div class="p-5 relative bg-gradient-to-b from-background-dark to-[#1a1d2d]">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-neon-yellow font-bold text-xl tracking-wide flex items-center gap-2">
+                                        DATA STREAM
+                                        <span class="material-icons text-sm animate-bounce">arrow_forward</span>
+</h3>
+<p class="text-gray-300 text-xs font-mono mt-1">Multiplication x4</p>
+</div>
+</div>
+<div class="mt-4 w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
+<div class="bg-neon-yellow h-full w-[0%] animate-[width_1s_ease-out_forwards]"></div>
+</div>
+<div class="flex justify-between mt-1 text-[10px] text-gray-500 font-mono uppercase">
+<span>Progress</span>
+<span>0%</span>
+</div>
+<div class="mt-4">
+<div class="w-full py-2 bg-neon-yellow text-black font-bold text-sm uppercase tracking-widest rounded text-center hover:bg-white transition-colors">
+                                    Inject Code
+                                </div>
+</div>
+</div>
+</button>
+</div>
+<!-- Level 5: Locked -->
+<div class="relative opacity-60 hover:opacity-100 transition-opacity">
+<div class="absolute inset-0 bg-black/40 backdrop-blur-[1px] z-10 rounded-xl flex items-center justify-center">
+<span class="material-icons text-neon-red text-4xl opacity-50">lock</span>
+</div>
+<div class="w-full bg-[#150f15] border border-neon-red/20 rounded-xl p-4 flex items-center gap-4 grayscale-[80%]">
+<div class="h-16 w-16 rounded-lg bg-cover bg-center shrink-0 border border-white/10" data-alt="Futuristic robot face close up" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDsB7V_npCef50SbvFgJ89B4KMbOp4TLtzil-2tNm26D4sb0xlFBl89OMiWa1ar5XmGoDBaWPYLd6_AHytqX_cUgQKYYlGYgBxD2_quUwgnS7SrPWNx2PbCGRkxzRLZssKTFQ-FVlMEoOsIOPZQfBekqrzoPhX25ODt965NKh8Jt-tPSR0GrmA5KkG5tT0d0skHRpiRtNqWVpXVN8W7XDh_YjYRPGBpfgdUn06GJZa6XwefklleVeWSU6PfmTRf1AHXTrgCSiIIkcU');">
+</div>
+<div class="flex-1">
+<h3 class="text-gray-400 font-bold tracking-wide">THE SPIRE</h3>
+<p class="text-neon-red/60 text-xs font-mono mt-0.5">Clear Sector 4 to Unlock</p>
+</div>
+<div class="text-2xl font-bold text-gray-700 font-display">05</div>
+</div>
+</div>
+<!-- Level 6: Locked -->
+<div class="relative opacity-50 hover:opacity-80 transition-opacity">
+<div class="absolute inset-0 bg-black/40 backdrop-blur-[1px] z-10 rounded-xl flex items-center justify-center">
+<span class="material-icons text-neon-red text-4xl opacity-50">lock</span>
+</div>
+<div class="w-full bg-[#150f15] border border-neon-red/20 rounded-xl p-4 flex items-center gap-4 grayscale-[90%]">
+<div class="h-16 w-16 rounded-lg bg-cover bg-center shrink-0 border border-white/10" data-alt="Server room with green lights" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBBHJzIBXoQRCzwuCLCi3jKSDFWIifxkXbkgtr32eaO0xxqO-euJSZHte28t3D4mYD8b5vtQ9OnOIan7gu835d1vQaHoRkY6aOU9lc2v4tTCriJIE6iAhXeUIQu-vX_hoaNBU_a9oGE3Vyt7HZ1HeQi_CU1ODMNL3gE1OJA6TEGizbUVTaY8AdHxKl4aYZZcVQ0kRvkqf52w-A3Os1j6ChG0Q0KYnwZlR4w9WrraGT6vMtytdQKsPp8CYENvidEODjSCyYd_vcgNrc');">
+</div>
+<div class="flex-1">
+<h3 class="text-gray-500 font-bold tracking-wide">CORE LOGIC</h3>
+<p class="text-gray-700 text-xs font-mono mt-0.5">Locked</p>
+</div>
+<div class="text-2xl font-bold text-gray-800 font-display">06</div>
+</div>
+</div>
+<!-- Level 7: Locked -->
+<div class="relative opacity-40 hover:opacity-80 transition-opacity">
+<div class="absolute inset-0 bg-black/40 backdrop-blur-[1px] z-10 rounded-xl flex items-center justify-center">
+<span class="material-icons text-neon-red text-4xl opacity-50">lock</span>
+</div>
+<div class="w-full bg-[#150f15] border border-neon-red/20 rounded-xl p-4 flex items-center gap-4 grayscale-[90%]">
+<div class="h-16 w-16 rounded-lg bg-cover bg-center shrink-0 border border-white/10" data-alt="Electronic circuit board macro shot" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBa7LwGZGl2m47_MnzXt-4XzKGFr5lgLyIVvHadDE4qVBBiTiKGM5a-Ex-vDGDHcmiLOYwFdvsLSmrGBFeMjmTdtyPdsZNBD6FZeCxTrnORPY675UQDnrGyNGLj1k9Mo2CM2UMOkuiONB7O3w2GoRjKh84TWrIuqlixzwObafHe8FVptH0vKgxK3FL1RW7Ri2TlD-QZpoYXS0PmodmZGhmNXFqMM5i8W9fA5ZQIPrqtRfTMrZVY-IC2kgdBo0nXGYX8_YhKJsu5twU');">
+</div>
+<div class="flex-1">
+<h3 class="text-gray-600 font-bold tracking-wide">SYNTH GARDEN</h3>
+<p class="text-gray-700 text-xs font-mono mt-0.5">Locked</p>
+</div>
+<div class="text-2xl font-bold text-gray-800 font-display">07</div>
+</div>
+</div>
+<!-- Spacer for scrolling past bottom nav -->
+<div class="h-8"></div>
+</div>
+</main>
+<!-- Bottom Navigation (Glassmorphism) -->
+<nav class="absolute bottom-6 left-6 right-6 z-40">
+<div class="glass-panel rounded-2xl flex justify-around items-center p-3 shadow-lg shadow-black/50 border border-white/10">
+<button class="flex flex-col items-center gap-1 px-4 py-1 text-gray-500 hover:text-white transition-colors group">
+<span class="material-icons text-2xl group-hover:scale-110 transition-transform">home</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Base</span>
+</button>
+<button class="flex flex-col items-center gap-1 px-4 py-2 bg-primary text-white rounded-xl shadow-[0_0_15px_#2547f4] -mt-8 border border-white/20 hover:bg-primary/90 transition-all transform hover:-translate-y-1">
+<span class="material-icons text-2xl">map</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Map</span>
+</button>
+<button class="flex flex-col items-center gap-1 px-4 py-1 text-gray-500 hover:text-white transition-colors group">
+<span class="material-icons text-2xl group-hover:scale-110 transition-transform">person</span>
+<span class="text-[10px] font-bold uppercase tracking-wider">Profile</span>
+</button>
+</div>
+</nav>
+<!-- Scanline Overlay for retro feel (optional, kept subtle) -->
+<div class="pointer-events-none fixed inset-0 z-50 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20 mix-blend-overlay"></div>
+</div>
+</body></html>

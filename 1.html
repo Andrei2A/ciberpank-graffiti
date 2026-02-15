@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cyber Graffiti - Main Menu</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2547f4",
+                        "primary-glow": "#4d6bff",
+                        "accent-pink": "#f425b0",
+                        "accent-cyan": "#25f4e6",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101322",
+                        "surface-dark": "#1a1e33",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    backgroundImage: {
+                        'brick-pattern': "url('https://images.unsplash.com/photo-1533648430635-f48559ce967b?q=80&w=1000&auto=format&fit=crop')",
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom CSS for specific effects that are complex in utility classes alone */
+        .text-glow-primary {
+            text-shadow: 0 0 10px #2547f4, 0 0 20px #2547f4, 0 0 40px #2547f4;
+        }
+        .text-glow-pink {
+            text-shadow: 0 0 5px #f425b0, 0 0 10px #f425b0, 0 0 20px #f425b0;
+        }
+        .text-glow-cyan {
+            text-shadow: 0 0 5px #25f4e6, 0 0 10px #25f4e6;
+        }
+        
+        /* Graffiti Spray Effect for Buttons */
+        .spray-btn {
+            position: relative;
+            isolation: isolate;
+        }
+        .spray-btn::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: currentColor;
+            opacity: 0.15;
+            filter: blur(12px);
+            z-index: -1;
+            border-radius: inherit;
+        }
+
+        /* Rain effect overlay */
+        .rain-overlay {
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+            background-size: 2px 100px;
+            animation: rain 1s linear infinite;
+        }
+        @keyframes rain {
+            0% {background-position: 0 0;}
+            100% {background-position: 0 1000px;}
+        }
+
+        /* Float animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .nozzle-hud-gradient {
+             background: linear-gradient(180deg, rgba(37, 71, 244, 0.1) 0%, rgba(37, 71, 244, 0.05) 100%);
+             backdrop-filter: blur(4px);
+             border: 1px solid rgba(37, 71, 244, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-hidden h-screen w-screen flex flex-col relative selection:bg-accent-pink selection:text-white">
+<!-- Background Layer: Brick Wall -->
+<div class="absolute inset-0 z-0 bg-background-dark">
+<div class="absolute inset-0 bg-brick-pattern bg-cover bg-center opacity-40 mix-blend-overlay" data-alt="Dark gritty brick wall texture in an alleyway"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-black/80 via-background-dark/80 to-background-dark/95"></div>
+<!-- Ambient Neon Glows -->
+<div class="absolute top-1/4 left-0 w-64 h-64 bg-primary/20 rounded-full blur-[100px]"></div>
+<div class="absolute bottom-1/3 right-0 w-80 h-80 bg-accent-pink/10 rounded-full blur-[120px]"></div>
+</div>
+<!-- Rain Overlay -->
+<div class="absolute inset-0 z-10 pointer-events-none rain-overlay opacity-30"></div>
+<!-- Main Content Container -->
+<main class="relative z-20 flex flex-col h-full w-full max-w-md mx-auto px-6 py-8 justify-between">
+<!-- Header / Logo Area -->
+<header class="flex flex-col items-center justify-center mt-8 space-y-2">
+<!-- Glitchy Title -->
+<div class="relative group cursor-default">
+<h1 class="text-6xl font-bold tracking-tighter text-center leading-none text-white mix-blend-screen" style="text-shadow: 4px 4px 0px #f425b0, -4px -4px 0px #25f4e6;">
+                    CYBER<br/>
+<span class="text-primary text-glow-primary">GRAFFITI</span>
+</h1>
+<!-- Subtitle as a sticker -->
+<div class="absolute -bottom-4 -right-4 bg-accent-pink text-black text-xs font-bold px-2 py-1 rotate-[-6deg] shadow-lg border-2 border-white rounded-sm">
+                    CLEAN-UP LOGIC
+                </div>
+</div>
+<div class="mt-6 flex items-center space-x-2 opacity-80">
+<span class="material-icons text-primary text-sm">wifi_tethering</span>
+<span class="text-xs tracking-widest uppercase text-primary-200">System Online</span>
+</div>
+</header>
+<!-- Menu Navigation -->
+<nav class="flex flex-col items-center w-full space-y-6 my-auto pt-10">
+<!-- PLAY Button (Primary) -->
+<button class="group w-full relative">
+<!-- Spray Paint Splatter Background -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[160%] bg-primary/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="relative w-full py-5 bg-gradient-to-r from-primary/90 to-primary/70 backdrop-blur-sm border-2 border-primary/50 text-white font-bold text-3xl tracking-widest uppercase rounded-xl shadow-[0_0_20px_rgba(37,71,244,0.4)] transform transition-transform duration-200 active:scale-95 hover:scale-105 overflow-hidden spray-btn">
+<!-- Drip effect -->
+<div class="absolute top-0 left-10 w-2 h-8 bg-primary/40 rounded-b-full opacity-60"></div>
+<div class="absolute top-0 right-20 w-3 h-12 bg-primary/30 rounded-b-full opacity-60 delay-100"></div>
+<span class="relative z-10 flex items-center justify-center gap-3 drop-shadow-md">
+<span class="material-icons text-4xl">play_circle</span>
+                        PLAY
+                    </span>
+<!-- Scanline overlay -->
+<div class="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-0 bg-[length:100%_4px,3px_100%] pointer-events-none"></div>
+</div>
+</button>
+<!-- SETTINGS Button (Secondary) -->
+<button class="group w-3/4 relative">
+<div class="relative w-full py-4 bg-surface-dark/60 backdrop-blur-md border border-white/10 hover:border-accent-cyan/50 text-gray-200 hover:text-accent-cyan font-bold text-xl tracking-wider uppercase rounded-lg shadow-lg transform transition-all duration-200 active:scale-95">
+<span class="relative z-10 flex items-center justify-center gap-2">
+<span class="material-icons text-sm group-hover:rotate-90 transition-transform duration-500">settings</span>
+                        SETTINGS
+                    </span>
+<!-- Decoration -->
+<div class="absolute -left-1 top-1/2 -translate-y-1/2 w-1 h-6 bg-accent-cyan/50 rounded-r-full"></div>
+</div>
+</button>
+<!-- HELP Button (Secondary) -->
+<button class="group w-3/4 relative">
+<div class="relative w-full py-4 bg-surface-dark/60 backdrop-blur-md border border-white/10 hover:border-accent-pink/50 text-gray-200 hover:text-accent-pink font-bold text-xl tracking-wider uppercase rounded-lg shadow-lg transform transition-all duration-200 active:scale-95">
+<span class="relative z-10 flex items-center justify-center gap-2">
+<span class="material-icons text-sm">help_outline</span>
+                        HELP
+                    </span>
+<!-- Decoration -->
+<div class="absolute -right-1 top-1/2 -translate-y-1/2 w-1 h-6 bg-accent-pink/50 rounded-l-full"></div>
+</div>
+</button>
+</nav>
+<!-- FPS Logic Nozzle / HUD Area -->
+<div class="relative w-full h-32 mt-auto flex justify-center items-end z-30 pointer-events-none">
+<!-- The Nozzle Graphic -->
+<!-- We use a combination of gradients and shapes to imply a futuristic tool held in hand -->
+<div class="relative w-48 h-full flex flex-col items-center justify-end animate-[float_4s_ease-in-out_infinite]">
+<!-- Holographic HUD floating above nozzle -->
+<div class="absolute -top-12 opacity-80 flex flex-col items-center space-y-1">
+<div class="px-3 py-1 nozzle-hud-gradient rounded-full text-[10px] font-mono text-primary-glow border border-primary/30 shadow-[0_0_10px_rgba(37,71,244,0.3)]">
+                         AMMO: LOGIC
+                     </div>
+<div class="w-0.5 h-4 bg-primary/30"></div>
+</div>
+<!-- Gun Body -->
+<div class="relative w-24 h-40 bg-gradient-to-b from-gray-800 to-black rounded-t-3xl border-x border-t border-gray-700 shadow-2xl flex justify-center overflow-hidden">
+<!-- Tech Details -->
+<div class="absolute top-4 w-16 h-16 rounded-full border-4 border-gray-900 bg-gray-800 shadow-inner flex items-center justify-center">
+<div class="w-10 h-10 rounded-full bg-primary animate-pulse shadow-[0_0_15px_#2547f4]"></div>
+</div>
+<!-- Side Grips -->
+<div class="absolute bottom-0 w-full h-20 bg-gray-900 bg-opacity-90">
+<div class="w-full h-1 bg-gray-800 mb-1"></div>
+<div class="w-full h-1 bg-gray-800 mb-1"></div>
+<div class="w-full h-1 bg-gray-800 mb-1"></div>
+</div>
+<!-- Glowing Barrel Line -->
+<div class="absolute inset-x-0 top-0 h-full w-1 mx-auto bg-primary/20"></div>
+</div>
+<!-- Muzzle Flash Hint (Subtle) -->
+<div class="absolute -top-6 w-32 h-16 bg-primary/10 rounded-full blur-xl"></div>
+</div>
+<!-- Side HUD Stats -->
+<div class="absolute bottom-4 right-0 flex flex-col items-end space-y-1">
+<div class="flex items-center space-x-1">
+<div class="h-1 w-1 bg-accent-cyan rounded-full"></div>
+<span class="text-[10px] text-gray-400 font-mono">BATTERY</span>
+</div>
+<div class="flex space-x-0.5">
+<div class="w-3 h-1 bg-accent-cyan shadow-[0_0_5px_#25f4e6]"></div>
+<div class="w-3 h-1 bg-accent-cyan shadow-[0_0_5px_#25f4e6]"></div>
+<div class="w-3 h-1 bg-accent-cyan shadow-[0_0_5px_#25f4e6]"></div>
+<div class="w-3 h-1 bg-gray-700"></div>
+</div>
+</div>
+<div class="absolute bottom-4 left-0 flex flex-col items-start space-y-1">
+<div class="flex items-center space-x-1">
+<span class="text-[10px] text-gray-400 font-mono">SIGNAL</span>
+<div class="h-1 w-1 bg-accent-pink rounded-full"></div>
+</div>
+<div class="text-xs font-mono text-accent-pink">5G-UZ</div>
+</div>
+</div>
+<!-- Footer Info -->
+<footer class="absolute bottom-2 left-0 w-full text-center z-20 pointer-events-none">
+<p class="text-[10px] text-gray-500 font-mono tracking-widest uppercase opacity-50">v1.0.4 // BETA_BUILD // IOS_DEPLOY</p>
+</footer>
+</main>
+<!-- Puddle Reflection Effect (Bottom) -->
+<div class="absolute bottom-0 w-full h-24 bg-gradient-to-t from-black via-black/50 to-transparent z-10 pointer-events-none"></div>
+</body></html>

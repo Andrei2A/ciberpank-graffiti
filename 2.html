@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cyber Graffiti: Clean-up Logic - Gameplay</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Permanent+Marker&amp;family=Black+Ops+One&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2547f4",
+                        "background-light": "#f5f6f8",
+                        "background-dark": "#101322",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "graffiti": ["Permanent Marker", "cursive"],
+                        "stencil": ["Black Ops One", "cursive"],
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'drip': 'drip 2s infinite linear',
+                    },
+                    keyframes: {
+                        drip: {
+                            '0%': { transform: 'translateY(0)', opacity: '1' },
+                            '100%': { transform: 'translateY(20px)', opacity: '0' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+<style>/* Custom styles for realistic textures */
+.wall-texture {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAbPc7d6GCjFJavHch4heLV_wMGoHbdjYaWCyyneXcY7E6FeIuwnmGSEX8FaZgaUtxtqamn4ArOsiK21pZsuNfJEpVGixKCOQ7MVKShOTqGNaE4Gg54YNISrDq0SM2xnx4oRsIwirJBbzymWX64UFgGQEiF4fRePxdTkPi-NKayLJvVMVS4Md4yXyYarSnbiMa6ooKJvnTO4CxJZaaGTIHjWm85Jhg5f_Crk084svBVdL_SW2PnwEi6lFDgjzhTx4WlOcM4M1wQ0wc);
+    background-size: cover;
+    background-blend-mode: multiply
+    }
+.spray-text {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.8))
+    }
+.neon-glow {
+    box-shadow: 0 0 15px #2547f4, inset 0 0 10px #2547f4
+    }
+.water-stream {
+    background: linear-gradient(to top, rgba(37, 71, 244, 0.1), rgba(100, 200, 255, 0.8));
+    filter: blur(2px)
+    }
+.drip-effect::after {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 20px;
+    background: inherit;
+    border-radius: 2px;
+    bottom: -10px;
+    left: 50%;
+    animation: drip 1.5s infinite
+    }</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display h-screen w-screen overflow-hidden flex flex-col relative text-white selection:bg-primary selection:text-white">
+<!-- Background Environment (Blurred City) -->
+<div class="absolute inset-0 z-0 opacity-40">
+<img alt="Cyberpunk neon city alleyway at night" class="w-full h-full object-cover blur-sm" data-alt="Blurred cyberpunk city street with neon lights at night" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn7iGvghVlk9Z4IE-rVWlFvCYc8PVKJHmdAm8wpVt8ygXjMrBogl-49f_6LwFPl_Z0r9Xe6YUSzFlYD-cBLt2bhnZ35ebwE5VKiAUWRiddG0_OD_dBrDkCN8RYam3D7IiFQ4LDI5B9M7D-JoTfth41P03g1KQ4RWZzP-lF1DX7Wwvw2LmiiUiIp2Qn4U1FebdDmo30LYHL4AkvT7TaHK7da3il35vNUZDKsiLi7I_T4qssW4RkHi_p_2F0gUVWJsBQQNPkDicfmWM"/>
+<div class="absolute inset-0 bg-background-dark/80 mix-blend-multiply"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-background-dark"></div>
+</div>
+<!-- Gameplay Container -->
+<main class="relative z-10 w-full h-full flex flex-col justify-between max-w-md mx-auto shadow-2xl bg-black/20 backdrop-blur-[2px] border-x border-white/5">
+<!-- Top HUD -->
+<header class="p-4 pt-6 flex justify-between items-start w-full bg-gradient-to-b from-black/80 to-transparent">
+<!-- Level Info -->
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-xs uppercase tracking-widest text-primary font-bold">Live Feed</span>
+</div>
+<h1 class="text-xl font-bold mt-1 text-white drop-shadow-md">LEVEL 06</h1>
+<p class="text-xs text-gray-400 font-mono tracking-wider">TABLE OF 6 // SECTOR 7G</p>
+</div>
+<!-- Stats/Timer -->
+<div class="flex flex-col items-end gap-2">
+<div class="bg-black/60 border border-primary/30 backdrop-blur-md px-3 py-1 rounded text-primary font-mono text-lg tracking-widest shadow-[0_0_10px_rgba(37,71,244,0.3)]">
+                    00:45:12
+                </div>
+<div class="flex gap-1">
+<div class="w-8 h-1 bg-primary rounded-full"></div>
+<div class="w-8 h-1 bg-primary rounded-full"></div>
+<div class="w-8 h-1 bg-primary/30 rounded-full"></div>
+</div>
+</div>
+<!-- Pause Button -->
+<button class="absolute top-6 right-1/2 translate-x-1/2 p-2 rounded bg-black/40 hover:bg-primary/20 border border-white/10 transition-colors">
+<svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</header>
+<!-- The Wall (Game Area) -->
+<section class="flex-grow flex flex-col items-center justify-center relative w-full px-4 perspective-1000">
+<!-- Concrete Wall Surface -->
+<div class="absolute inset-4 top-16 bottom-32 bg-[#1a1c23] rounded-xl wall-texture shadow-inner border border-white/5 overflow-hidden">
+<!-- Wall Grime Overlay -->
+<div class="absolute inset-0 bg-gradient-to-br from-black/60 via-transparent to-black/80 pointer-events-none"></div>
+<!-- Math Problem (Stenciled) -->
+<div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-full text-center">
+<div class="inline-block border-4 border-white/80 p-4 transform -rotate-1 mask-image-grunge">
+<span class="font-stencil text-5xl md:text-6xl text-white/90 tracking-widest drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)]" style="text-shadow: 2px 2px 0px #000;">
+                            6 x 7 = ?
+                        </span>
+</div>
+</div>
+<!-- Answer 1: 42 (Correct) -->
+<div class="absolute bottom-1/3 left-8 transform -rotate-6 transition-transform hover:scale-110">
+<span class="font-graffiti text-5xl text-[#39ff14] drop-shadow-[0_0_8px_rgba(57,255,20,0.6)]" style="-webkit-text-stroke: 1px #000;">
+                        42
+                    </span>
+<div class="absolute -bottom-4 left-2 w-1 h-8 bg-[#39ff14]/70 rounded-full blur-[1px]"></div>
+</div>
+<!-- Answer 2: 48 (Incorrect - Being Cleaned) -->
+<div class="absolute bottom-1/4 right-1/3 transform rotate-3">
+<div class="relative group">
+<!-- The Graffiti Text -->
+<span class="font-graffiti text-6xl text-[#ff00ff] drop-shadow-[0_0_10px_rgba(255,0,255,0.5)] opacity-60 transition-opacity duration-300" style="-webkit-text-stroke: 1px #000; clip-path: polygon(0 0, 100% 0, 100% 40%, 60% 50%, 40% 60%, 0 70%);">
+                            48
+                        </span>
+<!-- Water Hit Effect (Splash) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-blue-400/30 rounded-full blur-xl animate-pulse"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+<!-- Splash Particles -->
+<div class="absolute w-2 h-2 bg-white rounded-full -top-4 -left-2 animate-ping"></div>
+<div class="absolute w-1.5 h-1.5 bg-blue-200 rounded-full top-4 right-6 animate-ping delay-75"></div>
+<div class="absolute w-3 h-3 bg-white/80 rounded-full -bottom-2 -right-2 animate-bounce"></div>
+</div>
+<!-- Dissolving Drips -->
+<div class="absolute top-full left-2 w-1 h-12 bg-[#ff00ff] opacity-40 blur-[1px] animate-drip"></div>
+<div class="absolute top-full right-4 w-1.5 h-8 bg-[#ff00ff] opacity-50 blur-[1px] animate-drip delay-100"></div>
+</div>
+</div>
+<!-- Answer 3: 36 (Incorrect) -->
+<div class="absolute top-1/2 right-6 transform rotate-12 opacity-90">
+<span class="font-graffiti text-5xl text-[#ffff00] drop-shadow-[0_0_8px_rgba(255,255,0,0.6)]" style="-webkit-text-stroke: 1px #000;">
+                        36
+                    </span>
+</div>
+</div>
+</section>
+<!-- Weapon/Tool (Bottom Overlay) -->
+<div class="absolute bottom-0 left-0 right-0 h-48 pointer-events-none flex justify-center items-end z-20">
+<!-- Water Stream (Visuals only) -->
+<div class="absolute bottom-12 left-1/2 ml-8 w-1 h-[400px] bg-blue-400/80 shadow-[0_0_20px_#2547f4] origin-bottom transform rotate-[25deg] blur-[1px] z-10"></div>
+<div class="absolute bottom-12 left-1/2 ml-8 w-3 h-[380px] bg-white/20 origin-bottom transform rotate-[25deg] blur-md z-10"></div>
+<!-- Gun Model Representation -->
+<div class="relative w-64 h-48 bg-gray-800 rounded-t-3xl border-t border-x border-gray-600 shadow-2xl flex flex-col items-center justify-end transform translate-y-4">
+<!-- Glowing Core -->
+<div class="absolute top-8 w-16 h-16 bg-black rounded-full border-4 border-gray-700 shadow-inner flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-primary/20 animate-pulse"></div>
+<div class="absolute w-10 h-10 bg-primary rounded-full blur-md animate-pulse"></div>
+<div class="absolute text-[10px] text-white font-mono z-10">100 PSI</div>
+</div>
+<!-- Barrel Detail -->
+<div class="absolute -top-12 w-12 h-24 bg-gradient-to-b from-gray-700 to-gray-900 border-x border-gray-500 rounded-t-lg z-20 flex justify-center">
+<div class="w-2 h-full bg-black/30 mx-1"></div>
+<div class="w-2 h-full bg-black/30 mx-1"></div>
+</div>
+<!-- Gun Body Details -->
+<div class="w-full h-full p-6 relative">
+<!-- Pressure Gauge UI on Gun -->
+<div class="absolute top-4 right-4 w-24 h-8 bg-black rounded border border-gray-600 flex items-center px-2 gap-1">
+<div class="h-1.5 w-full bg-gray-800 rounded-full overflow-hidden">
+<div class="h-full w-[80%] bg-gradient-to-r from-primary to-cyan-400"></div>
+</div>
+</div>
+<!-- Decorative Lines -->
+<div class="absolute bottom-10 left-6 w-full h-px bg-gray-600"></div>
+<div class="absolute bottom-14 left-6 w-2/3 h-px bg-gray-600"></div>
+<span class="absolute bottom-2 right-4 text-[10px] text-gray-500 font-mono">MODEL: H20-BLASTER-V4</span>
+</div>
+</div>
+</div>
+<!-- Controls Overlay (Mobile Ergonomics) -->
+<div class="absolute bottom-6 left-6 right-6 flex justify-between items-end z-30 pointer-events-auto">
+<!-- Aiming Joystick Area (Visual Cue) -->
+<div class="w-16 h-16 rounded-full border-2 border-white/10 bg-white/5 backdrop-blur flex items-center justify-center">
+<div class="w-6 h-6 rounded-full bg-primary/50 shadow-[0_0_10px_#2547f4]"></div>
+</div>
+<!-- Fire Button -->
+<button class="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-blue-700 border-4 border-white/10 shadow-[0_0_30px_rgba(37,71,244,0.5)] active:scale-95 transition-transform flex items-center justify-center group">
+<svg class="h-8 w-8 text-white group-active:text-blue-200" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+<!-- Vignette -->
+<div class="absolute inset-0 pointer-events-none z-40 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(16,19,34,0.4)_70%,rgba(16,19,34,0.95)_100%)]"></div>
+</main>
+<!-- Scanlines Effect -->
+<div class="absolute inset-0 pointer-events-none z-50 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] pointer-events-none opacity-20 mix-blend-overlay"></div>
+</body></html>

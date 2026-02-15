@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Level Victory Screen - Cyber Graffiti</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#2547f4",
+              "background-light": "#f5f6f8",
+              "background-dark": "#101322",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            animation: {
+              'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              'pulse-glow': {
+                '0%, 100%': { opacity: '1', filter: 'drop-shadow(0 0 10px rgba(37, 71, 244, 0.7))' },
+                '50%': { opacity: '.8', filter: 'drop-shadow(0 0 25px rgba(37, 71, 244, 1))' },
+              },
+              'float': {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        /* Custom styles for effects that are tricky with just utility classes */
+        .neon-text {
+            text-shadow: 0 0 10px #2547f4, 0 0 20px #2547f4, 0 0 40px #2547f4;
+        }
+        .neon-border {
+            box-shadow: 0 0 5px #2547f4, inset 0 0 5px #2547f4;
+        }
+        .bg-grid-pattern {
+            background-image: linear-gradient(rgba(37, 71, 244, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(37, 71, 244, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .glass-panel {
+            background: rgba(16, 19, 34, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(37, 71, 244, 0.3);
+        }
+        .particle {
+            position: absolute;
+            background: #2547f4;
+            opacity: 0.6;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display h-screen w-full overflow-hidden text-white flex flex-col items-center justify-between relative selection:bg-primary selection:text-white">
+<!-- Background Grid Texture -->
+<div class="absolute inset-0 z-0 bg-grid-pattern opacity-30 pointer-events-none"></div>
+<!-- Background Image: Cleaned Wall -->
+<div class="absolute inset-0 z-0 opacity-40 mix-blend-overlay bg-cover bg-center" data-alt="Abstract dark cyberpunk city texture with neon reflections" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDY29DNjdJula05jFucSeRmYJBa7buNM939dPSMYixRSxOejmgjPJnOv54reXdqNDnK4-YBdCfiuq_p_40-xCmLiAOZOJFE1CdtHZGZmhcN45vnjORQmE7x6kGaAwBV_5EKDO-UduA7QS6cDrdR7JahTjWDfCJEsYLpRILtb4Fm69-4Vl8bnnGvRONdvMSYO4m-LQmFsylUtGSmuHCF0Zd36pVbgevmMmodyLS0TYHhk8DuSuldLwBhE1lGe8TQvji87koHE2CZiuY');"></div>
+<!-- Digital Confetti / Particles (Simulated with static divs for layout) -->
+<div class="absolute top-10 left-[10%] w-2 h-2 bg-primary rounded-full opacity-60 animate-pulse"></div>
+<div class="absolute top-20 right-[20%] w-3 h-3 border border-primary rotate-45 opacity-40"></div>
+<div class="absolute top-[40%] left-[5%] w-1 h-8 bg-primary opacity-30 rotate-12"></div>
+<div class="absolute bottom-[30%] right-[10%] w-4 h-4 bg-primary/20 rounded-full blur-sm"></div>
+<div class="absolute top-32 left-[80%] text-primary/40 text-xs font-mono">0101</div>
+<div class="absolute top-12 left-[30%] text-primary/30 text-xs font-mono">1100</div>
+<!-- Top Status Bar Area (Safe Area Placeholder) -->
+<div class="w-full h-12 z-20 flex justify-between items-end px-6 pb-2">
+<span class="text-xs text-gray-400 font-mono tracking-widest">LEVEL 03 COMPLETE</span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<div class="w-2 h-2 rounded-full bg-primary/30"></div>
+<div class="w-2 h-2 rounded-full bg-primary/30"></div>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center justify-center w-full max-w-md px-6 z-10 relative">
+<!-- Victory Header -->
+<div class="text-center mb-8 animate-float">
+<h1 class="text-5xl font-bold italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-primary/60 drop-shadow-[0_0_15px_rgba(37,71,244,0.5)]">
+                YOU WIN!
+            </h1>
+<div class="h-1 w-24 bg-primary mx-auto mt-2 rounded-full shadow-[0_0_10px_#2547f4]"></div>
+</div>
+<!-- Central Score Display -->
+<div class="relative w-full aspect-square max-h-80 flex items-center justify-center mb-8">
+<!-- Decorative concentric circles/glow -->
+<div class="absolute inset-0 rounded-full border border-primary/20 animate-[spin_10s_linear_infinite]"></div>
+<div class="absolute inset-4 rounded-full border border-dashed border-primary/30 animate-[spin_15s_linear_infinite_reverse]"></div>
+<div class="absolute inset-0 bg-primary/5 rounded-full blur-3xl"></div>
+<!-- The Number -->
+<div class="relative z-10 flex flex-col items-center justify-center">
+<span class="text-9xl font-bold text-white neon-text tracking-tighter">42</span>
+<span class="text-sm font-mono text-primary mt-2 uppercase tracking-[0.2em] bg-background-dark/80 px-3 py-1 rounded border border-primary/30">
+                    Solution Found
+                </span>
+</div>
+</div>
+<!-- Flavor Text -->
+<div class="text-center space-y-1 mb-6">
+<p class="text-lg font-medium text-white">Sector Cleaned.</p>
+<p class="text-sm text-gray-400 font-mono">Data integrity restored to 100%.</p>
+</div>
+<!-- Stats Grid (Mini) -->
+<div class="grid grid-cols-3 gap-3 w-full mb-8">
+<div class="glass-panel p-3 rounded-lg text-center flex flex-col items-center justify-center">
+<span class="material-icons text-primary text-xl mb-1">timer</span>
+<span class="text-xs text-gray-400 uppercase">Time</span>
+<span class="font-bold text-lg">0:45</span>
+</div>
+<div class="glass-panel p-3 rounded-lg text-center flex flex-col items-center justify-center">
+<span class="material-icons text-primary text-xl mb-1">bolt</span>
+<span class="text-xs text-gray-400 uppercase">Score</span>
+<span class="font-bold text-lg">1,250</span>
+</div>
+<div class="glass-panel p-3 rounded-lg text-center flex flex-col items-center justify-center">
+<span class="material-icons text-primary text-xl mb-1">star</span>
+<span class="text-xs text-gray-400 uppercase">Stars</span>
+<span class="font-bold text-lg text-yellow-400">3/3</span>
+</div>
+</div>
+</main>
+<!-- Bottom Action Panel -->
+<div class="w-full max-w-md px-6 pb-10 z-20 flex flex-col gap-4">
+<!-- Primary Action: Next Level -->
+<button class="group relative w-full h-16 rounded-xl bg-primary text-white font-bold text-lg tracking-wider overflow-hidden shadow-[0_0_20px_rgba(37,71,244,0.4)] transition-all active:scale-[0.98]">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+<span class="relative z-10 flex items-center justify-center gap-2">
+                NEXT LEVEL 
+                <span class="material-icons">arrow_forward</span>
+</span>
+</button>
+<!-- Secondary Action: Back to Menu -->
+<button class="w-full h-14 rounded-xl glass-panel text-gray-300 font-medium tracking-wide hover:bg-white/5 active:bg-white/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-icons text-sm">grid_view</span>
+            BACK TO MENU
+        </button>
+</div>
+</body></html>
